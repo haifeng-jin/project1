@@ -15,17 +15,6 @@ app.get('/', function(request, response) {
 
 //search contacts  return name& phonoe
 app.get('/rest', function(request, response) {
- response.render('pages/index');//?city=seattle&country=usa&gender=female
-    var state=request.query.state;
-    var gender=request.query.gender;
-    var sql = "select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= \""+String(state)+ "\" and gender.gender_name= \""+String(gender)+"\" ;";
-    console.log(sql);
-    var result;
-    //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
-    db.query(sql,function(err, rows, fields) {
-        if (err) throw err;
-        response.send(rows);
-    });
     //console.log('The solution is: ', result);
     db.getConnection(function(err, connection) {
         if (err) {
@@ -37,7 +26,10 @@ app.get('/rest', function(request, response) {
             });
         } else {
             // query the database using connection
-            connection.query("SELECT * FROM contact;", function(err, rows, fields) {
+            var state=request.query.state;
+            var gender=request.query.gender;
+            var sql = "select * from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= \""+String(state)+ "\" and gender.gender_name= \""+String(gender)+"\" ;";
+            connection.query(sql, function(err, rows, fields) {
                 if (err) {
                     console.error(err);
                     response.statusCode = 500;
@@ -46,13 +38,9 @@ app.get('/rest', function(request, response) {
                         err:    err.code
                     });
                 }
-                response.send({
-                    result: 'success',
-                    err:    '',
-                    fields: fields,
-                    json:   rows,
-                    length: rows.length
-                });
+                response.send(
+                    rows
+                );
                 connection.release();
             });
         }
