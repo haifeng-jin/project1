@@ -29,6 +29,9 @@ app.get('/rest', function(request, response) {
             var state=request.query.state;
             var gender=request.query.gender;
             var sql = "select * from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= \""+String(state)+ "\" and gender.gender_name= \""+String(gender)+"\" ;";
+            if(state.length==0 && gender.length==0)sql="select * from contact";
+            else if(state.length!=0 && gender.length==0)sql="select * from contact join (location) on ( contact.location_id=location.location_id )  where location.state= \""+String(state)+ "\";";
+            else if(state.length==0 && gender.length!=0)sql="select * from contact join (gender) on ( contact.gender_id=gender.gender_id)  where gender.gender_name= \""+String(gender)+"\" ;";
             connection.query(sql, function(err, rows, fields) {
                 if (err) {
                     console.error(err);
