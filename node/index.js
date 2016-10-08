@@ -1,9 +1,12 @@
 var express = require('express');
 var app = express();
 var db = require('./db');
+var bodyParser = require("body-parser");
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
@@ -13,7 +16,7 @@ app.get('/', function(request, response) {
     response.render('pages/index');
 });
 
-//search contacts  return all
+//search contacts  gender&state return all
 app.get('/rest', function(request, response) {
     //console.log('The solution is: ', result);
     db.getConnection(function(err, connection) {
@@ -81,8 +84,15 @@ app.get('/rest/:id', function(request, response) {
     console.log('The solution is: ', "hahh");
 });
 
-//create a new contact
-app.post('/rest', function(request, response) {
+
+
+
+
+
+
+
+function CreateContact(request,response)
+{
     db.getConnection(function(err, connection) {
         if (err) {
             console.error('CONNECTION error: ',err);
@@ -93,20 +103,20 @@ app.post('/rest', function(request, response) {
             });
         } else {
             // query the database using connection
-            var state=request.query.state;
-            var gender=request.query.gender;
+            var state=request.body.state;
+            var gender=request.body.gender;
             if(String(gender)=="Male")gender=1;
             else gender=2;
-            var name=String(request.query.FirstName)+String(request.query.LastName);
-            var phone_number=request.query.phone;
-            var email=request.query.email;
-            var relation=request.query.relation;
+            var name=String(request.body.FirstName)+String(request.body.LastName);
+            var phone_number=request.body.phone;
+            var email=request.body.email;
+            var relation=request.body.relation;
             if(String(relation)=="Family")relation=1;
             else if(String(relation)=="Classmate")relation=2;
             else  if(String(relation)=="Friend")relation=3;
             else relation=4;
-            var country=request.query.country;
-            var city=request.query.city;
+            var country=request.body.country;
+            var city=request.body.city;
             var sql = "select * from location  where location.state= \""+String(state)+ "\" and location.country= \""+String(country)+"\" and location.city= \""+String(city)+"\" ;";
             var location_sql="insert  into location(city,country,state)values(\""+String(city)+"\""+",\""+String(country)+"\""+",\""+String(state)+"\" );"
             connection.query(sql, function(err, rows, fields) {
@@ -124,24 +134,24 @@ app.post('/rest', function(request, response) {
                 if(rows.length==0)
                 {
                     //response.send("suceess");
-                        connection.query(location_sql,function(err,rows1,fields){
+                    connection.query(location_sql,function(err,rows1,fields){
+                        if(err)console.error(err);
+                        console.log(rows1)
+                        var contact_sql="insert into contact(name,phone_number,email,location_id,gender_id)values(\""+String(name)+"\""+",\""+String(phone_number)+"\""+",\""+String(email)+"\""+","+String(rows1.insertId)+","+String(gender)+");";
+                        connection.query(contact_sql, function (err,rows2,fields) {
                             if(err)console.error(err);
-                            console.log(rows1)
-                            var contact_sql="insert into contact(name,phone_number,email,location_id,gender_id)values(\""+String(name)+"\""+",\""+String(phone_number)+"\""+",\""+String(email)+"\""+","+String(rows1.insertId)+","+String(gender)+");";
-                            connection.query(contact_sql, function (err,rows2,fields) {
-                                if(err)console.error(err);
-                                //response.send(rows2);
-                                var relation_sql="insert into contact_relation (contact_id,relation_id) values ("+String(rows2.insertId)+","+String(relation)+");";
-                                console.log(relation_sql);
-                                connection.query(relation_sql, function (err,row3,fields) {
-                                    if(err)console.log(err);
-                                    response.send(row3);
-                                })
+                            //response.send(rows2);
+                            var relation_sql="insert into contact_relation (contact_id,relation_id) values ("+String(rows2.insertId)+","+String(relation)+");";
+                            console.log(relation_sql);
+                            connection.query(relation_sql, function (err,row3,fields) {
+                                if(err)console.log(err);
+                                response.send(row3);
                             })
-
                         })
+
+                    })
                 }
-               else
+                else
                 {
                     console.log(rows);
                     var contact_sql="insert into contact(name,phone_number,email,location_id,gender_id)values(\""+String(name)+"\""+",\""+String(phone_number)+"\""+",\""+String(email)+"\""+","+String(rows[0].location_id)+","+String(gender)+");";
@@ -161,16 +171,44 @@ app.post('/rest', function(request, response) {
             });
         }
     });
+}
+
+
+
+
+
+//create a new contact
+app.post('/rest', function(request, response) {
+    CreateContact(request,response);
 });
 
-//update a contact
-app.put('/rest/:id', function(request, response) {
 
+
+function DeleteTable(request,response,id)
+{
+    var relation_sql="delete from contact_relation where contact_id = "+String(id)+";";
+    connection.query(relation_sql, function(err, rows, fields){
+        if(err)console.log(err);
+        console.log(rows);
+        var contact_sql="delete from contact where contact_id = "+String(id)+";";
+        connection.query(contact_sql, function(err, rows1, fields){
+            if(err)console.log(err);
+            console.log(rows1);
+        })
+    })
+}
+
+//update a contact
+app.put('/rest', function(request, response) {
+    var id =request.body.contact_id;
+    DeleteTable(request,response,id);
+    CreateContact(request,response);
 });
 
 //delete a contact
 app.delete('/rest/:id', function(request, response) {
-
+    var id=request.params.id;
+    DeleteTable(request,response,id);
 });
 
 app.listen(app.get('port'), function() {

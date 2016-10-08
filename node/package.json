@@ -12,7 +12,8 @@
   "dependencies": {
     "ejs": "2.4.1",
     "mysql": "2.11.1",
-    "express": "4.13.3"
+    "express": "4.13.3",
+	"body-parser": "1.8.1"
   },
   "repository": {
     "type": "git",

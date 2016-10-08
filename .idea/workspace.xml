@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="922a7ca6-e3b1-4052-8f25-c75ef13b7d8f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node/index.js" afterPath="$PROJECT_DIR$/node/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node/package.json" afterPath="$PROJECT_DIR$/node/package.json" />
     </list>
     <ignored path="project1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,8 +28,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/node/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7528676">
-              <caret line="44" column="24" selection-start-line="44" selection-start-column="24" selection-end-line="44" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.061290324">
+              <caret line="18" column="42" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -558,12 +559,12 @@
       <workItem from="1475878368835" duration="12464000" />
       <workItem from="1475893711744" duration="4885000" />
       <workItem from="1475901068693" duration="878000" />
-      <workItem from="1475952479558" duration="7204000" />
+      <workItem from="1475952479558" duration="10529000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25431000" />
+    <option name="totallyTimeSpent" value="28756000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
@@ -609,7 +610,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/node/index.js</url>
-          <line>8</line>
+          <line>11</line>
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="1" />
@@ -650,8 +651,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/node/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7528676">
-          <caret line="44" column="24" selection-start-line="44" selection-start-column="24" selection-end-line="44" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.061290324">
+          <caret line="18" column="42" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
           <folding />
         </state>
       </provider>
