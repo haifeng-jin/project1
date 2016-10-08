@@ -8,7 +8,11 @@ function search() {
         return;
     $.ajax({
         type: "GET",
-        url: "/rest?firstname=" + names[0] + "&lastname=" + names[1]
+        url: "/rest?firstname=" + names[0] + "&lastname=" + names[1],
+        success: function(data) {
+            contact_list = data;
+            update_list();
+        }
     });
 }
 
@@ -40,7 +44,7 @@ function update_list() {
 }
 
 function init_list() {
-    $.ajax({ url: '/rest?state=Jiangxi&gender=Female', success: function(data) {
+    $.ajax({ url: '/rest/all', success: function(data) {
         contact_list = data;
         update_list();
     } });
