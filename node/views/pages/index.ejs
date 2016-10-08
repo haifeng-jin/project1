@@ -16,13 +16,13 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            min-height: 2000px;
+            min-height: 500px;
             padding-top: 70px;
         }
     </style>
 </head>
 
-<body onload="init()">
+<body onload="init_list()">
 
 
 <!-- Fixed navbar -->
@@ -98,114 +98,287 @@
     <div class="row">
         <div class="col-md-12">
             <div class="list-group" id="contact_list">
-                <a class="list-group-item list-group-item-action">
-                    <h5 class="list-group-item-heading">List group item heading</h5>
-                    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <h5 class="list-group-item-heading">List group item heading</h5>
-                    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                </a>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="text-center">
+            <ul class="pagination pagination-sm" id = "pagination">
+                <li><a>&laquo;</a></li>
+                <li><a>&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
     <!-- Modal -->
-    <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Create New Contact</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="firstname_create">First Name</label>
-                                    <input type="email" class="form-control" id="firstname_create">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="lastname_create">Last Name</label>
-                                    <input type="email" class="form-control" id="lastname_create">
-                                </div>
+</div> <!-- /container -->
+<div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="create_modal_label">Create New Contact</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstname_create">First Name</label>
+                                <input type="text" class="form-control" id="firstname_create">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="phone_create">Phone Number</label>
-                            <input type="email" class="form-control" id="phone_create">
-                        </div>
-                        <div class="form-group">
-                            <label for="email_create">Email</label>
-                            <input type="email" class="form-control" id="email_create">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="gender_create">Gender</label>
-                                    <select class="form-control" id="gender_create">
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="relation_create">Relation</label>
-                                    <select class="form-control" id="relation_create">
-                                        <option>Family</option>
-                                        <option>Classmate</option>
-                                        <option>Friend</option>
-                                        <option>Colleague</option>
-                                    </select>
-                                </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastname_create">Last Name</label>
+                                <input type="text" class="form-control" id="lastname_create">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="country_create">Country</label>
-                                    <input type="email" class="form-control" id="country_create">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="state_create">State</label>
-                                    <input type="email" class="form-control" id="stat_createe">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="city_create">City</label>
-                                    <input type="email" class="form-control" id="city_create">
-                                </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_create">Phone Number</label>
+                        <input type="text" class="form-control" id="phone_create">
+                    </div>
+                    <div class="form-group">
+                        <label for="email_create">Email</label>
+                        <input type="email" class="form-control" id="email_create">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="gender_create">Gender</label>
+                                <select class="form-control" id="gender_create">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12"></div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="relation_create">Relation</label>
+                                <select class="form-control" id="relation_create">
+                                    <option>Family</option>
+                                    <option>Classmate</option>
+                                    <option>Friend</option>
+                                    <option>Colleague</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3"></div>
-                            <button type="button" class="col-md-2 btn btn-default text-center" data-dismiss="modal">Close</button>
-                            <div class="col-md-2"></div>
-                            <button type="button" class="col-md-2 btn btn-primary text-center" onclick="create_new_contact()">Create</button>
-                            <div class="col-md-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="country_create">Country</label>
+                                <input type="text" class="form-control" id="country_create">
+                            </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="state_create">State</label>
+                                <input type="text" class="form-control" id="state_create">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="city_create">City</label>
+                                <input type="text" class="form-control" id="city_create">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <button type="button" class="col-md-2 btn btn-default text-center" data-dismiss="modal">Close</button>
+                        <div class="col-md-2"></div>
+                        <button type="button" class="col-md-2 btn btn-primary text-center" onclick="create_new_contact()">Create</button>
+                        <div class="col-md-3"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div> <!-- /container -->
-
-
+</div>
+<div class="modal fade" id="detail_modal" tabindex="-1" role="dialog" aria-labelledby="detail_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="detail_modal_label">Contact Detail</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstname_detail">First Name</label>
+                                <p id="firstname_detail">Haifeng</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastname_detail">Last Name</label>
+                                <p id="lastname_detail">Jin</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone_detail">Phone</label>
+                                <p id="phone_detail"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email_detail">Email</label>
+                                <p id="email_detail"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="gender_detail">Gender</label>
+                                <p id="gender_detail"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="relation_detail">Relation</label>
+                                <p id="relation_detail"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="country_detail">Country</label>
+                                <p id="country_detail"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="state_detail">State</label>
+                                <p id="state_detail"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="city_detail">City</label>
+                                <p id="city_detail"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <button type="button" class="col-md-2 btn btn-default text-center" data-dismiss="modal">Close</button>
+                        <div class="col-md-2"></div>
+                        <button type="button" class="col-md-2 btn btn-primary text-center" onclick="update_contact(current_contact_id)">Update</button>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="update_modal" tabindex="-1" role="dialog" aria-labelledby="update_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="update_modal_label">Update Contact</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstname_update">First Name</label>
+                                <input type="text" class="form-control" id="firstname_update">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastname_update">Last Name</label>
+                                <input type="text" class="form-control" id="lastname_update">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_update">Phone Number</label>
+                        <input type="text" class="form-control" id="phone_update">
+                    </div>
+                    <div class="form-group">
+                        <label for="email_update">Email</label>
+                        <input type="email" class="form-control" id="email_update">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="gender_update">Gender</label>
+                                <select class="form-control" id="gender_update">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="relation_update">Relation</label>
+                                <select class="form-control" id="relation_update">
+                                    <option>Family</option>
+                                    <option>Classmate</option>
+                                    <option>Friend</option>
+                                    <option>Colleague</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="country_update">Country</label>
+                                <input type="text" class="form-control" id="country_update">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="state_update">State</label>
+                                <input type="text" class="form-control" id="state_update">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="city_update">City</label>
+                                <input type="text" class="form-control" id="city_update">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <button type="button" class="col-md-2 btn btn-default text-center" data-dismiss="modal">Close</button>
+                        <div class="col-md-2"></div>
+                        <button type="button" class="col-md-2 btn btn-primary text-center" onclick="submit_update_contact(current_contact_id)">Submit</button>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/pagination.js"></script>
 <script src="/js/util.js"></script>
 
 </body>
