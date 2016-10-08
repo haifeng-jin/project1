@@ -20,12 +20,13 @@ app.get('/rest', function(request, response) {
     var gender=request.query.gender;
     var sql = "select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= \""+String(state)+ "\" and gender.gender_name= \""+String(gender)+"\" ;";
     console.log(sql);
+    var result;
     //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
     db.query(sql,function(err, rows, fields) {
         if (err) throw err;
-        response.render("pages/index");
-        console.log('The solution is: ', rows);
+        response.send(rows);
     });
+    //console.log('The solution is: ', result);
 });
 
 
