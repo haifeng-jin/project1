@@ -31,8 +31,9 @@ app.get('/rest', function(request, response) {
             // query the database using connection
             var firstname=request.query.firstname;
             var lastname=request.query.lastname;
-            var name=firstname+lastname;
+            var name=String(firstname)+" "+String(lastname);
             var sql = "select * from contact where contact.name= \""+String(name)+"\" ;";
+
             connection.query(sql, function(err, rows, fields) {
                 if (err) {
                     console.error(err);
@@ -52,6 +53,39 @@ app.get('/rest', function(request, response) {
     //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
 });
 
+
+app.get('/rest/all', function(request, response) {
+    //console.log('The solution is: ', result);
+    db.getConnection(function(err, connection) {
+        if (err) {
+            console.error('CONNECTION error: ',err);
+            response.statusCode = 503;
+            response.send({
+                result: 'error',
+                err:    err.code
+            });
+        } else {
+            // query the database using connection
+
+            var sql = "select * from contact ;";
+            connection.query(sql, function(err, rows, fields) {
+                if (err) {
+                    console.error(err);
+                    response.statusCode = 500;
+                    response.send({
+                        result: 'error',
+                        err:    err.code
+                    });
+                }
+                response.send(
+                    rows
+                );
+                connection.release();
+            });
+        }
+    });
+    //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
+});
 
 
 //info of relation_id
