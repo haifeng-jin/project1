@@ -15,17 +15,37 @@ app.get('/', function(request, response) {
 
 //search contacts  return name& phonoe
 app.get('/rest', function(request, response) {
- response.render('pages/index');//?city=seattle&country=usa&gender=female
-    var state=request.query.state;
-    var gender=request.query.gender;
-    var sql = "select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= \""+String(state)+ "\" and gender.gender_name= \""+String(gender)+"\" ;";
-    console.log(sql);
-    //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
-    db.query(sql,function(err, rows, fields) {
-        if (err) throw err;
-        response.render("pages/index");
-        console.log('The solution is: ', rows);
+    db.getConnection(function(err, connection) {
+        if (err) {
+            console.error('CONNECTION error: ',err);
+            response.statusCode = 503;
+            response.send({
+                result: 'error',
+                err:    err.code
+            });
+        } else {
+            // query the database using connection
+            connection.query("SELECT * FROM contact;", function(err, rows, fields) {
+                if (err) {
+                    console.error(err);
+                    response.statusCode = 500;
+                    response.send({
+                        result: 'error',
+                        err:    err.code
+                    });
+                }
+                response.send({
+                    result: 'success',
+                    err:    '',
+                    fields: fields,
+                    json:   rows,
+                    length: rows.length
+                });
+                connection.release();
+            });
+        }
     });
+    //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
 });
 
 
@@ -55,7 +75,7 @@ app.get('/rest/:id', function(request, response) {
         response.json(rows);
         console.log('The solution is: ', rows);
     });
-   console.log('The solution is: ', "hahh");
+    console.log('The solution is: ', "hahh");
 });
 
 //create a new contact
