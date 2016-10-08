@@ -211,7 +211,7 @@ app.put('/rest', function(request, response) {
 
 //delete a contact
 app.delete('/rest/:id', function(request, response) {
-    console.log(id);
+    var id=request.params.id;
    DeleteTable(request,response,id);
 });
 
