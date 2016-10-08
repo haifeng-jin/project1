@@ -193,10 +193,20 @@ function DeleteTable(request,response,id)
         connection.query(relation_sql, function (err, rows, fields) {
             if (err)console.log(err);
             console.log(rows);
-            var contact_sql = "delete from contact where contact_id = " + String(id) + ";";
-            connection.query(contact_sql, function (err, rows1, fields) {
+            var photo_sql = "delete from photo where contact_id = " + String(id) + ";";
+            connection.query(photo_sql, function (err, rows1, fields) {
                 if (err)console.log(err);
                 console.log(rows1);
+                var sound_sql = "delete from sound where contact_id = " + String(id) + ";";
+                connection.query(sound_sql, function (err, rows2, fields) {
+                    if (err)console.log(err);
+                    console.log(rows2);
+                    var contact_sql = "delete from contact where contact_id = " + String(id) + ";";
+                    connection.query(contact_sql, function (err, rows3, fields) {
+                        if (err)console.log(err);
+                        console.log(rows3);
+                    })
+                })
             })
         })
     });
