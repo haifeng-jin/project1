@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-
+var db = require('./db');
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
@@ -13,14 +13,49 @@ app.get('/', function(request, response) {
     response.render('pages/index');
 });
 
-//search contacts
+//search contacts  return name& phonoe
 app.get('/rest', function(request, response) {
-
+ response.render('pages/index');//?city=seattle&country=usa&gender=female
+    var state=request.query.state;
+    var gender=request.query.gender;
+    var sql = "select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= \""+String(state)+ "\" and gender.gender_name= \""+String(gender)+"\" ;";
+    console.log(sql);
+    //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
+    db.query(sql,function(err, rows, fields) {
+        if (err) throw err;
+        response.render("pages/index");
+        console.log('The solution is: ', rows);
+    });
 });
+
+
+
+//info of relation_id
+app.get('/rest/relation/:id', function(request, response) {
+    var id=request.params.id;
+    db.query('select relation_name from relation join (contact_relation) on (relation.relation_id=contact_relation.relation_id )  where contact_relation.contact_id=?',id, function(err, rows, fields) {
+        if (err) throw err;
+        var result=new Array();
+        for (var i=0;i<rows.length;i++)
+        {
+            result[i]=rows[i].relation_name;
+        }
+        response.json(result);
+        console.log('The solution is: ', rows);
+    });
+});
+
 
 //info of one contact
 app.get('/rest/:id', function(request, response) {
 
+    var id=request.params.id;
+    db.query('select * from contact join (location,gender) on (contact.location_id=location.location_id and contact.gender_id=gender.gender_id )  where contact.contact_id=?',id, function(err, rows, fields) {
+        if (err) throw err;
+        response.json(rows);
+        console.log('The solution is: ', rows);
+    });
+   console.log('The solution is: ', "hahh");
 });
 
 //create a new contact
@@ -44,13 +79,13 @@ app.listen(app.get('port'), function() {
 
 //anything below this are examples.
 
-var db = require('./db');
-db.query('show tables;', function(err, rows, fields) {
-    if (err) throw err;
-
-    console.log('The solution is: ', rows);
-});
-db.end();
+//var db = require('./db');
+//db.query('show tables;', function(err, rows, fields) {
+//    if (err) throw err;
+//
+//    console.log('The solution is: ', rows);
+//});
+//db.end();
 
 app.get('/ejstest/:id', function(request, response) {
     var drinks = [
