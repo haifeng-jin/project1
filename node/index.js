@@ -13,7 +13,7 @@ app.get('/', function(request, response) {
     response.render('pages/index');
 });
 
-//search contacts  return name& phonoe
+//search contacts  return all
 app.get('/rest', function(request, response) {
     //console.log('The solution is: ', result);
     db.getConnection(function(err, connection) {
@@ -80,7 +80,84 @@ app.get('/rest/:id', function(request, response) {
 
 //create a new contact
 app.post('/rest', function(request, response) {
+    db.getConnection(function(err, connection) {
+        if (err) {
+            console.error('CONNECTION error: ',err);
+            response.statusCode = 503;
+            response.send({
+                result: 'error',
+                err:    err.code
+            });
+        } else {
+            // query the database using connection
+            var state=request.query.state;
+            var gender=request.query.gender;
+            if(String(gender)=="Male")gender=1;
+            else gender=2;
+            var name=String(request.query.FirstName)+String(request.query.LastName);
+            var phone_number=request.query.phone;
+            var email=request.query.email;
+            var relation=request.query.relation;
+            if(String(relation)=="Family")relation=1;
+            else if(String(relation)=="Classmate")relation=2;
+            else  if(String(relation)=="Friend")relation=3;
+            else relation=4;
+            var country=request.query.country;
+            var city=request.query.city;
+            var sql = "select * from location  where location.state= \""+String(state)+ "\" and location.country= \""+String(country)+"\" and location.city= \""+String(city)+"\" ;";
+            var location_sql="insert  into location(city,country,state)values(\""+String(city)+"\""+",\""+String(country)+"\""+",\""+String(state)+"\" );"
+            connection.query(sql, function(err, rows, fields) {
+                if (err) {
+                    console.error(err);
+                    response.statusCode = 500;
+                    response.send({
+                        result: 'error',
+                        err:    err.code
+                    });
+                }
+                //response.send(
+                //    rows
+                //);
+                if(rows.length==0)
+                {
+                    //response.send("suceess");
+                        connection.query(location_sql,function(err,rows1,fields){
+                            if(err)console.error(err);
+                            console.log(rows1)
+                            var contact_sql="insert into contact(name,phone_number,email,location_id,gender_id)values(\""+String(name)+"\""+",\""+String(phone_number)+"\""+",\""+String(email)+"\""+","+String(rows1.insertId)+","+String(gender)+");";
+                            connection.query(contact_sql, function (err,rows2,fields) {
+                                if(err)console.error(err);
+                                //response.send(rows2);
+                                var relation_sql="insert into contact_relation (contact_id,relation_id) values ("+String(rows2.insertId)+","+String(relation)+");";
+                                console.log(relation_sql);
+                                connection.query(relation_sql, function (err,row3,fields) {
+                                    if(err)console.log(err);
+                                    response.send(row3);
+                                })
+                            })
 
+                        })
+                }
+               else
+                {
+                    console.log(rows);
+                    var contact_sql="insert into contact(name,phone_number,email,location_id,gender_id)values(\""+String(name)+"\""+",\""+String(phone_number)+"\""+",\""+String(email)+"\""+","+String(rows[0].location_id)+","+String(gender)+");";
+                    console.log(contact_sql);
+                    connection.query(contact_sql, function (err,rows2,fields) {
+                        if(err)console.error(err);
+                        console.log(rows2);
+                        var relation_sql="insert into contact_relation (contact_id,relation_id) values ("+String(rows2.insertId)+","+String(relation)+");";
+                        console.log(relation_sql);
+                        connection.query(relation_sql, function (err,row3,fields) {
+                            if(err)console.log(err);
+                            response.send(row3);
+                        })
+                    })
+                }
+                connection.release();
+            });
+        }
+    });
 });
 
 //update a contact
