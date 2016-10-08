@@ -49,6 +49,17 @@ function submit_update_contact(id) {
     $('#update_modal').modal('hide');
 }
 
+function delete_contact(id) {
+    var contact = get_contact(id);
+    var temp = confirm("Are you sure to delete contact " + contact.name + "?");
+    if (temp) {
+        $.ajax({
+            type: "DELETE",
+            url: "/rest/" + contact.contact_id
+        });
+    }
+}
+
 function fill_in_detail_modal(contact) {
     $.ajax({ url: ("/rest/relation/"+contact.contact_id), success: function(data) {
         $('#firstname_detail').html(contact.name.split(" ")[0]);
