@@ -47,6 +47,12 @@ function update_contact(id) {
 
 function submit_update_contact(id) {
     $('#update_modal').modal('hide');
+    var contact = updated_contact(id);
+    $.ajax({
+        type: "PUT",
+        url: "/rest",
+        data: contact
+    });
 }
 
 function delete_contact(id) {
@@ -91,4 +97,18 @@ function fill_in_update_modal(contact) {
         $('#city_update').val(contact.city);
         $('#relation_update').val(data[0]);
     } });
+}
+
+function updated_contact(id) {
+    var contact = {};
+    contact.contact_id = id;
+    contact.name = $('#firstname_update').val() + " " + $('#lastname_update').val();
+    contact.phone_number = $('#phone_update').val();
+    contact.email = $('#email_update').val();
+    contact.gender = $('#gender_update').val();
+    contact.country = $('#country_update').val();
+    contact.state = $('#state_update').val();
+    contact.city = $('#city_update').val();
+    contact.relation = $('#relation_update').val();
+    return contact;
 }
