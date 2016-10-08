@@ -32,7 +32,7 @@ app.get('/rest', function(request, response) {
             var firstname=request.query.firstname;
             var lastname=request.query.lastname;
             var name=String(firstname)+" "+String(lastname);
-            var sql = "select * from contact where contact.name= \""+String(name)+"\" ;";
+            var sql = "select * from contact join (location,gender) on (contact.location_id=location.location_id and contact.gender_id=gender.gender_id ) where contact.name= \""+String(name)+"\" ;";
 
             connection.query(sql, function(err, rows, fields) {
                 if (err) {
@@ -67,7 +67,7 @@ app.get('/rest/all', function(request, response) {
         } else {
             // query the database using connection
 
-            var sql = "select * from contact ;";
+            var sql = "select * from contact join (location,gender) on (contact.location_id=location.location_id and contact.gender_id=gender.gender_id ) ;";
             connection.query(sql, function(err, rows, fields) {
                 if (err) {
                     console.error(err);
@@ -195,7 +195,7 @@ function CreateContact(request,response)
                         console.log(relation_sql);
                         connection.query(relation_sql, function (err,row3,fields) {
                             if(err)console.log(err);
-                            response.send(row3);
+                            respons(row3);
                         })
                     })
                 }
