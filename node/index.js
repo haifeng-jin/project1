@@ -27,6 +27,37 @@ app.get('/rest', function(request, response) {
         response.send(rows);
     });
     //console.log('The solution is: ', result);
+    db.getConnection(function(err, connection) {
+        if (err) {
+            console.error('CONNECTION error: ',err);
+            response.statusCode = 503;
+            response.send({
+                result: 'error',
+                err:    err.code
+            });
+        } else {
+            // query the database using connection
+            connection.query("SELECT * FROM contact;", function(err, rows, fields) {
+                if (err) {
+                    console.error(err);
+                    response.statusCode = 500;
+                    response.send({
+                        result: 'error',
+                        err:    err.code
+                    });
+                }
+                response.send({
+                    result: 'success',
+                    err:    '',
+                    fields: fields,
+                    json:   rows,
+                    length: rows.length
+                });
+                connection.release();
+            });
+        }
+    });
+    //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
 });
 
 
@@ -56,7 +87,7 @@ app.get('/rest/:id', function(request, response) {
         response.json(rows);
         console.log('The solution is: ', rows);
     });
-   console.log('The solution is: ', "hahh");
+    console.log('The solution is: ', "hahh");
 });
 
 //create a new contact
