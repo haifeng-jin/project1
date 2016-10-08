@@ -107,8 +107,8 @@ function CreateContact(request,response)
             var gender=request.body.gender;
             if(String(gender)=="Male")gender=1;
             else gender=2;
-            var name=String(request.body.FirstName)+String(request.body.LastName);
-            var phone_number=request.body.phone;
+            var name=String(request.body.name);
+            var phone_number=request.body.phone_number;
             var email=request.body.email;
             var relation=request.body.relation;
             if(String(relation)=="Family")relation=1;
@@ -186,16 +186,20 @@ app.post('/rest', function(request, response) {
 
 function DeleteTable(request,response,id)
 {
-    var relation_sql="delete from contact_relation where contact_id = "+String(id)+";";
-    connection.query(relation_sql, function(err, rows, fields){
-        if(err)console.log(err);
-        console.log(rows);
-        var contact_sql="delete from contact where contact_id = "+String(id)+";";
-        connection.query(contact_sql, function(err, rows1, fields){
-            if(err)console.log(err);
-            console.log(rows1);
+    db.getConnection(function(err, connection) {
+        console.log(id);
+        console.log("hahhah");
+        var relation_sql = "delete from contact_relation where contact_id = " + String(id) + ";";
+        connection.query(relation_sql, function (err, rows, fields) {
+            if (err)console.log(err);
+            console.log(rows);
+            var contact_sql = "delete from contact where contact_id = " + String(id) + ";";
+            connection.query(contact_sql, function (err, rows1, fields) {
+                if (err)console.log(err);
+                console.log(rows1);
+            })
         })
-    })
+    });
 }
 
 //update a contact
@@ -207,8 +211,8 @@ app.put('/rest', function(request, response) {
 
 //delete a contact
 app.delete('/rest/:id', function(request, response) {
-    var id=request.params.id;
-    DeleteTable(request,response,id);
+    console.log(id);
+   DeleteTable(request,response,id);
 });
 
 app.listen(app.get('port'), function() {
