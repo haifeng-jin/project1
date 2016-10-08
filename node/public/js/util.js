@@ -1,9 +1,26 @@
 var contact_list;
 var current_contact_id;
 
+function search() {
+    var name = $("#search_box").val();
+    var names = name.split(" ");
+    if (names.length != 2)
+        return;
+    $.ajax({
+        type: "GET",
+        url: "/rest?firstname=" + names[0] + "&lastname=" + names[1]
+    });
+}
+
 function create_new_contact() {
     update_list();
+    var contact = created_contact();
     $('#create_modal').modal('hide');
+    $.ajax({
+        type: "POST",
+        url: "/rest",
+        data: contact
+    });
 }
 
 function update_list() {
@@ -64,6 +81,7 @@ function delete_contact(id) {
             url: "/rest/" + contact.contact_id
         });
     }
+    $('#detail_modal').modal('hide');
 }
 
 function fill_in_detail_modal(contact) {
@@ -110,5 +128,18 @@ function updated_contact(id) {
     contact.state = $('#state_update').val();
     contact.city = $('#city_update').val();
     contact.relation = $('#relation_update').val();
+    return contact;
+}
+
+function created_contact() {
+    var contact = {};
+    contact.name = $('#firstname_create').val() + " " + $('#lastname_create').val();
+    contact.phone_number = $('#phone_create').val();
+    contact.email = $('#email_create').val();
+    contact.gender = $('#gender_create').val();
+    contact.country = $('#country_create').val();
+    contact.state = $('#state_create').val();
+    contact.city = $('#city_create').val();
+    contact.relation = $('#relation_create').val();
     return contact;
 }
