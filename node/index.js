@@ -188,6 +188,7 @@ function DeleteTable(request,response,id)
         console.log(id);
         console.log("hahhah");
         var relation_sql = "delete from contact_relation where contact_id = " + String(id) + ";";
+        console.log(relation_sql);
         connection.query(relation_sql, function (err, rows, fields) {
             if (err)console.log(err);
             console.log(rows);
