@@ -31,7 +31,6 @@
         left_page.attr("onclick", "update(current_page - 1)");
         right_page.attr("onclick", "update(current_page + 1)");
         for (var i = Math.max(0, current_page - 5); i <= Math.min(page_num - 1, current_page + 5); i++) {
-            console.log(i);
             var li = $("<li>");
             var a = $("<a>");
             a.html(i + 1);
@@ -54,6 +53,7 @@
             left_page.attr("class", "disabled");
         if (current_page === page_num)
             right_page.attr("class", "disabled");
+        $('li').find('a').filter(':contains("'+a+'")').parent().attr("class", "active");
 
         table.html("");
         var start = (current_page - 1) * per_page;

@@ -63,7 +63,7 @@
                 <input type="text" class="form-control" placeholder="e.g.: Haifeng Jin" name="srch-term" id="search_box">
                 <div class="input-group-btn">
                     <button class="btn btn-default" type="submit" onclick="search()"><i class="glyphicon glyphicon-search"></i></button>
-                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#create_modal">create</button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#create_modal">create</button>
                 </div>
             </div>
         </div>
@@ -161,11 +161,11 @@
                     <div class="row">
                         <div class="col-md-12"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="padding-top: 10px">
                         <div class="col-md-3"></div>
                         <button type="button" class="col-md-2 btn btn-default text-center" data-dismiss="modal">Close</button>
                         <div class="col-md-2"></div>
-                        <button type="button" class="col-md-2 btn btn-primary text-center" onclick="create_new_contact()">Create</button>
+                        <button type="button" class="col-md-2 btn btn-default text-center" onclick="create_new_contact()">Create</button>
                         <div class="col-md-3"></div>
                     </div>
                 </div>
@@ -256,12 +256,12 @@
                         <div class="col-md-12 text-center" id="video_detail">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="padding-top: 10px">
+                        <div class="col-md-3"></div>
+                        <button type="button" class="col-md-2 btn btn-default text-center" onclick="delete_contact(current_contact_id)">Delete</button>
                         <div class="col-md-2"></div>
-                        <button type="button" class="col-md-3 btn btn-primary text-center" onclick="delete_contact(current_contact_id)">Delete</button>
-                        <div class="col-md-2"></div>
-                        <button type="button" class="col-md-3 btn btn-primary text-center" onclick="update_contact(current_contact_id)">Update</button>
-                        <div class="col-md-2"></div>
+                        <button type="button" class="col-md-2 btn btn-default text-center" onclick="update_contact(current_contact_id)">Update</button>
+                        <div class="col-md-3"></div>
                     </div>
 
 
@@ -346,11 +346,11 @@
                     <div class="row">
                         <div class="col-md-12"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="padding-top: 10px">
                         <div class="col-md-3"></div>
                         <button type="button" class="col-md-2 btn btn-default text-center" data-dismiss="modal">Close</button>
                         <div class="col-md-2"></div>
-                        <button type="button" class="col-md-2 btn btn-primary text-center" onclick="submit_update_contact(current_contact_id)">Submit</button>
+                        <button type="button" class="col-md-2 btn btn-default text-center" onclick="submit_update_contact(current_contact_id)">Submit</button>
                         <div class="col-md-3"></div>
                     </div>
                 </div>
