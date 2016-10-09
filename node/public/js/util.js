@@ -32,16 +32,35 @@ function update_list() {
     var list_html = $("#contact_list").html("");
     for (var i = 0; i < contact_list.length; i++) {
         var d = contact_list[i];
-        var $a = $("<a>", {"class": "list-group-item list-group-item-action", "onclick": "show_detail(" + d.contact_id + ")"});
+        var $div = $("<div>", {"class":"row"});
+        var $a = $("<a>", {"class": "list-group-item list-group-item-action"});//, "onclick": "show_detail(" + d.contact_id + ")"});
         var $h5 = $("<b>", {"class": "list-group-item-text"});
         $h5.html(d.name);
         var $p = $("<p>", {"class": "list-group-item-text"});
         $p.html("Phone: " + d.phone_number);
-        $a.append($h5);
-        $a.append($p);
+        var $col = $("<div>", {"class":"col-md-9"});
+        $col.append($h5);
+        $col.append($p);
+        $div.append($col);
+        var $buttons = make_buttons(d);
+        $div.append($buttons);
+        $a.append($div);
         list_html.append($a);
     }
     init_paginator();
+}
+
+function make_buttons(contact) {
+    var buttons = $("<div>", {"class":"col-md-3"});
+    var button1 = $("<span>", {"class":"glyphicon glyphicon-th-list col-md-4", "onclick":"show_detail("+contact.contact_id+")"});
+    var button2 = $("<span>", {"class":"glyphicon glyphicon-pencil col-md-4", "onclick":"update_contact("+contact.contact_id+")"});
+    var button3 = $("<span>", {"class":"glyphicon glyphicon-remove col-md-4", "onclick":"delete_contact("+contact.contact_id+")"});
+    var row = $("<div>", {"class":"row","style":"padding-top:10px"});
+    row.append(button1);
+    row.append(button2);
+    row.append(button3);
+    buttons.append(row);
+    return buttons;
 }
 
 function init_list() {
@@ -92,9 +111,10 @@ function delete_contact(id) {
         $.ajax({
             type: "DELETE",
             url: "/rest/" + contact.contact_id
+        }, function () {
         });
+        window.location.href = "/";
     }
-    window.location.href = "/";
 }
 
 function fill_in_detail_modal(contact) {
