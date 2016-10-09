@@ -25,6 +25,7 @@ function create_new_contact() {
         url: "/rest",
         data: contact
     });
+    window.location.href = "/";
 }
 
 function update_list() {
@@ -32,7 +33,7 @@ function update_list() {
     for (var i = 0; i < contact_list.length; i++) {
         var d = contact_list[i];
         var $a = $("<a>", {"class": "list-group-item list-group-item-action", "onclick": "show_detail(" + d.contact_id + ")"});
-        var $h5 = $("<h5>", {"class": "list-group-item-heading"});
+        var $h5 = $("<b>", {"class": "list-group-item-text"});
         $h5.html(d.name);
         var $p = $("<p>", {"class": "list-group-item-text"});
         $p.html("Phone: " + d.phone_number);
@@ -44,6 +45,13 @@ function update_list() {
 }
 
 function init_list() {
+    $('#search_box').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            search();
+        }
+    });
+
     $.ajax({ url: '/rest/all', success: function(data) {
         contact_list = data;
         update_list();
@@ -74,6 +82,7 @@ function submit_update_contact(id) {
         url: "/rest",
         data: contact
     });
+    window.location.href = "/";
 }
 
 function delete_contact(id) {
@@ -85,25 +94,56 @@ function delete_contact(id) {
             url: "/rest/" + contact.contact_id
         });
     }
-    $('#detail_modal').modal('hide');
+    window.location.href = "/";
 }
 
 function fill_in_detail_modal(contact) {
-    $.ajax({ url: ("/rest/relation/"+contact.contact_id), success: function(data) {
-        $('#firstname_detail').html(contact.name.split(" ")[0]);
-        $('#lastname_detail').html(contact.name.split(" ")[1]);
-        $('#phone_detail').html(contact.phone_number);
-        $('#email_detail').html(contact.email);
-        $('#gender_detail').html(contact.gender_name);
-        $('#country_detail').html(contact.country);
-        $('#state_detail').html(contact.state);
-        $('#city_detail').html(contact.city);
-        var relation = data[0];
-        for (var i = 1; i < data.length; i++) {
-            relation += " ";
-            relation += data[i];
-        }
-        $('#relation_detail').html(relation);
+    $.ajax({ url: ("/rest/relation/"+contact.contact_id), success: function(relation_array) {
+        $.ajax({ url: ("/rest/photo/"+contact.contact_id), success: function(photo_array) {
+            $.ajax({ url: ("/rest/sound/"+contact.contact_id), success: function(sound_array) {
+                $.ajax({ url: ("/rest/video/"+contact.contact_id), success: function(video_array) {
+
+                    $('#firstname_detail').html(contact.name.split(" ")[0]);
+                    $('#lastname_detail').html(contact.name.split(" ")[1]);
+                    $('#phone_detail').html(contact.phone_number);
+                    $('#email_detail').html(contact.email);
+                    $('#gender_detail').html(contact.gender_name);
+                    $('#country_detail').html(contact.country);
+                    $('#state_detail').html(contact.state);
+                    $('#city_detail').html(contact.city);
+                    var relation = relation_array[0];
+                    var i = 0;
+                    for (i = 1; i < relation_array.length; i++) {
+                        relation += " ";
+                        relation += relation_array[i];
+                    }
+                    $('#relation_detail').html(relation);
+                    var photo_detail = $('#photo_detail');
+                    photo_detail.html("");
+                    for (i = 0; i < photo_array.length; i++) {
+                        var $img = $("<img>", {"src":"/img/" + photo_array[i] + ".jpg", "class":"img-thumbnail"});
+                        photo_detail.append($img);
+                    }
+                    var sound_detail = $('#sound_detail');
+                    sound_detail.html("");
+                    for (i = 0; i < sound_array.length; i++) {
+                        var $audio = $("<audio>", {"controls":"controls"});
+                        var $source = $("<source>", {"src":"/sound/" + sound_array[i] + ".wav", "type": "audio/x-wav"});
+                        $audio.append($source);
+                        sound_detail.append($audio);
+                    }
+                    var video_detail = $('#video_detail');
+                    video_detail.html("");
+                    for (i = 0; i < video_array.length; i++) {
+
+                        var $video = $("<video>", {"controls":"controls", "width":"400"});
+                        var $source = $("<source>", {"src":"/video/" + video_array[i] + ".mp4", "type": "video/mp4"});
+                        $video.append($source);
+                        video_detail.append($video);
+                    }
+                } })
+            } })
+        } })
     } });
 }
 

@@ -21,14 +21,17 @@
             rows.push(tr[i]);
         }
         table.html("");
-        createPaginator();
         update(current_page);
     }
 
-    function createPaginator() {
+    function createPaginator(current_page) {
+        pagination.html("");
+        pagination.append(left_page);
+        pagination.append(right_page);
         left_page.attr("onclick", "update(current_page - 1)");
         right_page.attr("onclick", "update(current_page + 1)");
-        for (var i = 0; i < page_num; i++) {
+        for (var i = Math.max(0, current_page - 5); i <= Math.min(page_num - 1, current_page + 5); i++) {
+            console.log(i);
             var li = $("<li>");
             var a = $("<a>");
             a.html(i + 1);
@@ -39,6 +42,7 @@
     }
 
     function update(a) {
+        createPaginator(a);
         if (a < 1 || a > page_num)
             return;
         current_page = a;
@@ -50,7 +54,6 @@
             left_page.attr("class", "disabled");
         if (current_page === page_num)
             right_page.attr("class", "disabled");
-        pagination.children("li")[current_page].setAttribute("class", "active");
 
         table.html("");
         var start = (current_page - 1) * per_page;

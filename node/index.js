@@ -87,13 +87,57 @@ app.get('/rest/all', function(request, response) {
     //console.log('select name,phone_number from contact join (location,gender) on ( contact.location_id=location.location_id and contact.gender_id=gender.gender_id)  where location.state= '+String(state)+ ' and gender.gender_name= '+String(gender));
 });
 
+//info of video
+app.get('/rest/video/:id', function(request, response) {
+    var id=request.params.id;
+    db.query('select path from video where contact_id=?;',id, function(err, rows, fields) {
+        if (err) throw err;
+        var result=[];
+        for (var i=0;i<rows.length;i++)
+        {
+            result[i]=rows[i].path;
+        }
+        response.json(result);
+        console.log('The solution is: ', rows);
+    });
+});
+
+//info of sound
+app.get('/rest/sound/:id', function(request, response) {
+    var id=request.params.id;
+    db.query('select path from sound where contact_id=?;',id, function(err, rows, fields) {
+        if (err) throw err;
+        var result=[];
+        for (var i=0;i<rows.length;i++)
+        {
+            result[i]=rows[i].path;
+        }
+        response.json(result);
+        console.log('The solution is: ', rows);
+    });
+});
+
+//info of photo
+app.get('/rest/photo/:id', function(request, response) {
+    var id=request.params.id;
+    db.query('select path from photo where contact_id=?;',id, function(err, rows, fields) {
+        if (err) throw err;
+        var result=[];
+        for (var i=0;i<rows.length;i++)
+        {
+            result[i]=rows[i].path;
+        }
+        response.json(result);
+        console.log('The solution is: ', rows);
+    });
+});
 
 //info of relation_id
 app.get('/rest/relation/:id', function(request, response) {
     var id=request.params.id;
     db.query('select relation_name from relation join (contact_relation) on (relation.relation_id=contact_relation.relation_id )  where contact_relation.contact_id=?',id, function(err, rows, fields) {
         if (err) throw err;
-        var result=new Array();
+        var result=[];
         for (var i=0;i<rows.length;i++)
         {
             result[i]=rows[i].relation_name;
@@ -262,26 +306,3 @@ app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
 
-//anything below this are examples.
-
-//var db = require('./db');
-//db.query('show tables;', function(err, rows, fields) {
-//    if (err) throw err;
-//
-//    console.log('The solution is: ', rows);
-//});
-//db.end();
-
-app.get('/ejstest/:id', function(request, response) {
-    var drinks = [
-        { name: request.query.name , drunkness: request.params.id },//name is the param follows the URL after "?", e.g. "/ejstest/2?name=Mary"
-        { name: 'Martini', drunkness: 5 },
-        { name: 'Scotch', drunkness: 10 }
-    ];
-    var tagline = "Any code of your own that you haven't looked at for six or more months might as well have been written by someone else.";
-
-    response.render('pages/ejs', {
-        drinks: drinks,
-        tagline: tagline
-    });
-});
