@@ -1,5 +1,0 @@
-[
-	{"firstname": "a", "lastname": "b", "phone": "9", "contact_id":"1324"},
-	{"firstname": "a", "lastname": "b", "phone": "9", "contact_id":"1324"},
-	{"firstname": "a", "lastname": "b", "phone": "9", "contact_id":"1324"}
-]
